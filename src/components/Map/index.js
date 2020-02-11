@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { StyleSheet, Text, View, Platform } from 'react-native';
 
 import MapView from 'react-native-maps';
+import Search from '../Search';
+import Directions from '../Directions';
 
 export default function Map() {
-    const [region, setRegion] = useState({});
+    const [region, setRegion] = useState(null);
+    const [destination, setDestination] = useState(null);
 
     useEffect(() => {
         async function getLocation() {
@@ -28,9 +31,17 @@ export default function Map() {
         getLocation()
     }, [])
 
+    function handleLocationSelected(data, { geometry }) {
+        const { location: { lat: latitude, lng: longitude } } = geometry
+        setDestination({
+            latitude,
+            longitude,
+            title: data.strutured_formatting.main_text
+        })
+    }
+
     return (
         <View style={styles.container}>
-            {/* <Text>TESTE</Text> */}
             <MapView
                 style={{ flex: 1, width: '100%' }}
                 // San Francisco Location
@@ -43,7 +54,15 @@ export default function Map() {
                 showsUserLocation
                 loadingEnabled
                 region={region}
-            />
+            >
+                {destination &&
+                    (<Directions
+                        origin={region}
+                        destination={destination}
+                        onReady={() => { }}
+                    />)}
+            </MapView>
+            <Search onLocationSelected={handleLocationSelected} />
         </View>
     );
 }
@@ -52,5 +71,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         width: '100%',
+        paddingTop: Platform.OS === 'android' && 25
     },
 })
