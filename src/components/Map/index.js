@@ -8,6 +8,7 @@ import Directions from '../Directions';
 export default function Map() {
     const [region, setRegion] = useState(null);
     const [destination, setDestination] = useState(null);
+    const [mapView, setMapView] = useState();
 
     useEffect(() => {
         async function getLocation() {
@@ -54,12 +55,17 @@ export default function Map() {
                 showsUserLocation
                 loadingEnabled
                 region={region}
+                ref={el => setMapView(el)}
+            // ref={el => this.mapView = el}
             >
                 {destination &&
                     (<Directions
                         origin={region}
                         destination={destination}
-                        onReady={() => { }}
+                        onReady={result => {
+                            //this.mapView.fitToCoordinates(result.coordinates)
+                            mapView.fitToCoordinates(result.coordinates);
+                        }}
                     />)}
             </MapView>
             <Search onLocationSelected={handleLocationSelected} />

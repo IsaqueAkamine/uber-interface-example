@@ -6,7 +6,7 @@ export default Directions = ({ destination, origin, onReady }) => (
         destination={destination}
         origin={origin}
         onReady={onReady}
-        apikey="AIzaSyDrmvZlcRUa32woYHYHXeNMvkKq82kqqpA"
+        apikey="AIzaSyCXdjR7roRRqPhmDoQx5k3BrqmABIPpeJ4"
         strokeWidth={3}
         strokeColor="#222"
     />

@@ -14,7 +14,7 @@ export default function Search(props) {
             }}
             query={{
                 // key: 'https://maps.googleapis.com/maps/api/place/findplacefromtext/output?parameters',
-                key: 'AIzaSyDrmvZlcRUa32woYHYHXeNMvkKq82kqqpA',
+                key: 'AIzaSyCXdjR7roRRqPhmDoQx5k3BrqmABIPpeJ4',
                 language: 'pt'
             }}
             textInputProps={{
