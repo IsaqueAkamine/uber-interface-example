@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Fragment } from 'react';
 import { StyleSheet, Text, View, Platform } from 'react-native';
 
-import MapView from 'react-native-maps';
+import MapView, { Marker } from 'react-native-maps';
 import Search from '../Search';
 import Directions from '../Directions';
 
 import { getPixelSize } from '../../utils';
+import markerImage from '../../assets/marker.png';
 
 export default function Map() {
     const [region, setRegion] = useState(null);
@@ -61,21 +62,50 @@ export default function Map() {
             // ref={el => this.mapView = el}
             >
                 {destination &&
-                    (<Directions
-                        origin={region}
-                        destination={destination}
-                        onReady={result => {
-                            //this.mapView.fitToCoordinates(result.coordinates)
-                            mapView.fitToCoordinates(result.coordinates, {
-                                edgePadding: {
-                                    right: getPixelSize(50),
-                                    left: getPixelSize(50),
-                                    top: getPixelSize(50),
-                                    bottom: getPixelSize(50)
-                                }
-                            });
-                        }}
-                    />)}
+                    (
+                        <Fragment>
+                            <Directions
+                                origin={region}
+                                destination={destination}
+                                onReady={result => {
+                                    //this.mapView.fitToCoordinates(result.coordinates)
+                                    mapView.fitToCoordinates(result.coordinates, {
+                                        edgePadding: {
+                                            right: getPixelSize(50),
+                                            left: getPixelSize(50),
+                                            top: getPixelSize(50),
+                                            bottom: getPixelSize(50)
+                                        }
+                                    });
+                                }}
+                            />
+                            <Marker
+                                coordinate={destination}
+                                anchor={{ x: 0, y: 0 }}
+                                image={markerImage}>
+                                <View style={{
+                                    backgroundColor: "#FFF",
+                                    shadowColor: "#000",
+                                    shadowOffset: { width: 0, height: 0 },
+                                    shadowOpacity: 0.1,
+                                    elevation: 1,
+                                    border: 1,
+                                    borderColor: "#ddd",
+                                    borderRadius: 3,
+                                    flexDirection: 'row',
+                                }}>
+                                    <Text style={{
+                                        marginVertical: 8,
+                                        marginHorizontal: 10,
+                                        fontSize: 14,
+                                        color: "#333",
+                                    }}>
+                                        {destination.title}
+                                    </Text>
+                                </View>
+                            </Marker>
+                        </Fragment>
+                    )}
             </MapView>
             <Search onLocationSelected={handleLocationSelected} />
         </View>
